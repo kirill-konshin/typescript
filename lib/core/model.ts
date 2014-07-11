@@ -8,8 +8,12 @@ export class Model extends observable.Observable {
 
     }
 
-    foo() {
-        throw new Error();
+    foo(...args) {
+        throw new Error(args[0]);
+    }
+
+    bar(...args) {
+        throw new Error(args[0]);
     }
 
 }

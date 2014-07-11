@@ -4,15 +4,28 @@
     module.exports = function(grunt) {
 
         var path = require('path'),
-            pkg = grunt.file.readJSON('package.json');
+            pkg = grunt.file.readJSON('package.json'),
+            tmpPath = path.normalize(__dirname + '/' + pkg.buildDir + '/tmp');
 
-        grunt.registerTask('copySourceMaps', '', function() {
+        grunt.registerTask('parseSourceMaps', '', function() {
 
             var original = grunt.file.readJSON(pkg.buildDir + '/out-browserify.js.map'),
                 minified = grunt.file.readJSON(pkg.buildDir + '/out-browserify.min.js.map');
 
-            minified.sourcesContent = original.sourcesContent;
+            original.sources = original.sources.map(function(file){
 
+                file = file.replace(tmpPath + '/', './');
+
+                if (file.indexOf('_prelude.js') != -1) file = './require-stub.js';
+
+                return file;
+
+            });
+
+            minified.sourcesContent = original.sourcesContent;
+            minified.sources = original.sources;
+
+            grunt.file.write(pkg.buildDir + '/out-browserify.js.map', JSON.stringify(original));
             grunt.file.write(pkg.buildDir + '/out-browserify.min.js.map', JSON.stringify(minified));
 
         });
@@ -87,7 +100,7 @@
                     dest: '<%= pkg.buildDir %>/tmp/out-browserify.js',
                     options: {
                         preBundleCB: function(b) {
-                            b.plugin('tsify', {target: 'ES5'});
+                            b.plugin('tsify', {target: 'ES5', module: 'commonjs'});
                         },
                         bundleOptions: {
                             debug: true,
@@ -159,7 +172,7 @@
             'exorcise:build', // extract source maps in a separate file
             'uglify:build', // compress
             'copy:publish', // copy to build from temp
-            'copySourceMaps' // replace missing source map sources @see https://github.com/smrq/tsify/issues/4
+            'parseSourceMaps' // replace missing source map sources and create relative paths
         ]);
 
     };
