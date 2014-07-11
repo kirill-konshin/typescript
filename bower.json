@@ -1,0 +1,7 @@
+{
+    "name": "tmp",
+    "private": true,
+    "dependencies": {
+        "requirejs": "*"
+    }
+}
