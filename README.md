@@ -1,6 +1,6 @@
 # TypeScript Playground
 
-## Goal
+## Goals
 
 * **(DONE)** Create a build system for TypeScript project, that successfully handles following tasks:
     * Supports different build types:
@@ -13,8 +13,9 @@
     * Compiles TypeScript preserving source map information for each original TS file no matter which buld type is used
     * Reduce TS compilator code duplication (like `...args` notation support or `extend` function, etc.)
 * **(TBD)** Create test framework foundation
-    * Mocha test runner
-    * Istanbul code coverage, gather coverage for original TS files (if possible)
+    * Mocha test framework (Chai assertion engine)
+    * Karma and console test runners
+    * Istanbul code coverage, which is obtained for original TS files (if possible)
 
 ## Installation
 
