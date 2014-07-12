@@ -20,13 +20,13 @@
 ## Installation
 
 ```
-npm install
-bower install
+$ npm install
+$ bower install
 ```
 
 If you don't have Grunt or Bower do the following:
 ```
-npm install -g bower grunt-cli
+$ npm install -g bower grunt-cli
 ```
 
 ## Build types
@@ -34,7 +34,7 @@ npm install -g bower grunt-cli
 Usage
 
 ```
-grunt [type]
+$ grunt [type]
 ```
 
 * ***empty type*** - concurrently build everything
