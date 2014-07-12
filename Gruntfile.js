@@ -8,22 +8,33 @@
 
         require('time-grunt')(grunt);
 
-        var path = require('path'),
-            pkg = grunt.file.readJSON('package.json');
+        var path = require('path');
 
-        //grunt.file.mkdir is capable of creating nested subdirs
+        grunt.option.init({
+            testGrep: '',
+            testTimeout: 300
+        });
 
         grunt.initConfig({
-            pkg: pkg,
+            pkg: grunt.file.readJSON('package.json'),
+            /**
+             * BUILD
+             */
             clean: {
                 node: {
                     src: ['<%= pkg.paths.node %>']
+                },
+                nodeTest: {
+                    src: ['<%= pkg.paths.nodeTest %>']
                 },
                 amd: {
                     src: ['<%= pkg.paths.amd %>']
                 },
                 standalone: {
                     src: ['<%= pkg.paths.standalone %>']
+                },
+                coverage: {
+                    src: ['<%= pkg.paths.coverage %>']
                 }
             },
             typescript: {
@@ -38,6 +49,13 @@
                 node: {
                     src: ['<%= pkg.paths.libTSMask %>'],
                     dest: '<%= pkg.paths.node %>',
+                    options: {
+                        module: 'commonjs'
+                    }
+                },
+                nodeTest: {
+                    src: ['<%= pkg.paths.libTSMask %>'],
+                    dest: '<%= pkg.paths.nodeTest %>',
                     options: {
                         module: 'commonjs'
                     }
@@ -123,6 +141,9 @@
                     dest: '<%= pkg.paths.standalone %>'
                 }
             },
+            /**
+             * WATCH
+             */
             watch: {
                 options: {
                     atBegin: true,
@@ -137,6 +158,10 @@
                     files: ['<%= pkg.paths.libTSMask %>'],
                     tasks: ['node']
                 },
+                nodeTest: {
+                    files: ['<%= pkg.paths.libTSMask %>'],
+                    tasks: ['nodeTest']
+                },
                 amd: {
                     files: ['<%= pkg.paths.libTSMask %>'],
                     tasks: ['amd']
@@ -146,11 +171,42 @@
                     tasks: ['standalone']
                 }
             },
+            /**
+             * CONCURRENCY
+             */
             concurrent: {
                 all: {
                     tasks: ['amd', 'node', 'standalone'],
                     options: { //@see https://github.com/sindresorhus/grunt-concurrent#options
                         limit: 4
+                    }
+                }
+            },
+            /**
+             * TESTS
+             */
+            mocha_istanbul: {
+                coverage: {
+                    src: '<%= pkg.paths.nodeTest %>',
+                    options: {
+                        coverageFolder: '<%= pkg.paths.coverage %>',
+                        mask: '<%= pkg.paths.testMask %>',
+                        require: ['<%= pkg.paths.testFile %>'],
+                        reporter: 'spec',
+                        excludes: ['<%= pkg.paths.testMask %>'], // exclude test files from coverage
+                        timeout: grunt.option('testTimeout'),
+                        grep: grunt.option('testGrep')
+                    }
+                }
+            },
+            mochacli: {
+                test: {
+                    options: {
+                        filesRaw: '<%= pkg.paths.nodeTest %>/<%= pkg.paths.testMask %>',
+                        require: ['<%= pkg.paths.testFile %>'],
+                        reporter: 'spec',
+                        timeout: grunt.option('testTimeout'),
+                        grep: grunt.option('testGrep')
                     }
                 }
             }
@@ -166,6 +222,8 @@
         grunt.loadNpmTasks('grunt-exorcise');
         grunt.loadNpmTasks('grunt-text-replace');
         grunt.loadNpmTasks('grunt-concurrent');
+        grunt.loadNpmTasks('grunt-mocha-cli');
+        grunt.loadNpmTasks('grunt-mocha-istanbul');
 
         grunt.registerTask('processSourceMaps', 'Replace missing source map sources and make relative paths', function() {
 
@@ -192,6 +250,18 @@
 
         });
 
+        grunt.registerTask('options', 'Get options', function() {
+
+            grunt.log.writeln('Options');
+            grunt.log.writeln('--test-grep', grunt.option('testGrep'));
+            grunt.log.writeln('--test-timeout', grunt.option('testTimeout'));
+
+        });
+
+        /**
+         * BUILD TASKS
+         */
+
         grunt.registerTask('amd', 'AMD/RequireJS build', [
             'clean:amd',
             'typescript:amd',
@@ -205,6 +275,12 @@
             'replace:sourceMapPath'
         ]);
 
+        grunt.registerTask('nodeTest', 'CommonJS/NodeJS build for test', [
+            'clean:nodeTest',
+            'typescript:nodeTest',
+            'replace:sourceMapSupport'
+        ]);
+
         grunt.registerTask('standalone', 'Standalone build for browser', [
             'clean:standalone',
             'browserify:standalone', // compile TS and concatenate into one JS file
@@ -216,6 +292,21 @@
 
         grunt.registerTask('default', 'Build everything', [
             'concurrent:all'
+        ]);
+
+        /**
+         * TESTING TASKS
+         */
+
+        grunt.registerTask('coverage', 'Coverage', [
+            'nodeTest',
+            'clean:coverage',
+            'mocha_istanbul:coverage'
+        ]);
+
+        grunt.registerTask('test', 'Test', [
+            'nodeTest',
+            'mochacli:test'
         ]);
 
     };

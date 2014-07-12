@@ -3,17 +3,26 @@
     "paths": {
         "build": "build",
         "lib": "lib",
+        "test": "test",
         "libTSMask": "<%= pkg.paths.lib %>/**/*.ts",
         "standalone": "<%= pkg.paths.build %>/standalone",
         "standaloneFile": "<%= pkg.paths.build %>/standalone/<%= pkg.name %>",
         "node": "<%= pkg.paths.build %>/node",
-        "amd": "<%= pkg.paths.build %>/amd"
+        "nodeTest": "<%= pkg.paths.build %>/nodeTest",
+        "amd": "<%= pkg.paths.build %>/amd",
+        "coverage": "<%= pkg.paths.build %>/coverage",
+        "testFile": "<%= pkg.paths.test %>/mocha.js",
+        "testMask": "**/*-spec.js"
     },
     "dependencies": {
         "typescript": "*",
+        "browserify": "*",
         "tsify": "*",
         "source-map-support": "*",
         "time-grunt": "*",
+        "mocha": "*",
+        "chai": "*",
+        "chai-spies": "*",
         "grunt": "*",
         "grunt-contrib-clean": "*",
         "grunt-contrib-copy": "*",
@@ -25,6 +34,8 @@
         "grunt-text-replace": "*",
         "grunt-typescript": "*",
         "grunt-concurrent": "*",
-        "grunt-contrib-compress": "*"
+        "grunt-contrib-compress": "*",
+        "grunt-mocha-cli": "*",
+        "grunt-mocha-istanbul": "*"
     }
 }

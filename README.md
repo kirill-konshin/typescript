@@ -12,10 +12,12 @@
             * Should work without RequireJS, but should be still compatible with AMD/RequireJS environment
     * Compiles TypeScript preserving source map information for each original TS file no matter which buld type is used
     * Reduce TS compilator code duplication (like `...args` notation support or `extend` function, etc.)
-* **(TBD)** Create test framework foundation
+* **(InProgress)** Create test framework foundation
     * Mocha test framework (Chai assertion engine)
     * Karma and console test runners
     * Istanbul code coverage, which is obtained for original TS files (if possible)
+* **(TBD)** Performance-efficient watchers
+* **(TBD)** Browser auto-reload
 
 ## Installation
 
@@ -31,7 +33,7 @@ $ npm install -g bower grunt-cli
 
 ## Build types
 
-Usage
+Usage:
 
 ```
 $ grunt [type]
@@ -47,7 +49,18 @@ $ grunt [type]
 
 ## Testing
 
-After build open `web/*.html` files in browser. Type `RCSDK.modelInstance.foo()` in standalone mode (files
+### NodeJS
+
+To get test results or coverage run:
+
+```
+$ grunt test
+$ grunt coverage
+```
+
+### Browser
+
+After build open `./web/*.html` files in browser. Type `RCSDK.modelInstance.foo()` in standalone mode (files
 `standalone[-min].html`) or `RCSDK.amd.modelInstance.foo()` in RequireJS mode (file `requirejs.html`) to get an error.
 
 Also type `node node` in terminal. Script will immediately die with an error, take a close look on stack trace, it
@@ -56,3 +69,7 @@ should contain references to original TypeScript files.
 ## Important notes
 
 * All build paths are located in `package.json`
+* Coverage understanding tips:
+    * `if (b.hasOwnProperty(p)) d[p] = b[p];` - there were no statics defined in class
+    * `args[_i] = arguments[_i + 0];` - `...args` was not used
+
