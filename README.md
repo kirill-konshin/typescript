@@ -70,6 +70,7 @@ should contain references to original TypeScript files.
 
 * All build paths are located in `package.json`
 * Coverage understanding tips:
+    * https://github.com/gotwarlost/istanbul/issues/59
     * `if (b.hasOwnProperty(p)) d[p] = b[p];` - there were no statics defined in class
     * `args[_i] = arguments[_i + 0];` - `...args` was not used
 
