@@ -1,18 +1,30 @@
 {
-  "dependencies": {
-    "typescript": "*",
-    "grunt": "*",
-    "grunt-ts": "*",
-    "grunt-contrib-clean": "*",
-    "grunt-contrib-copy": "*",
-    "grunt-contrib-requirejs": "*",
-    "almond": "*",
-    "grunt-contrib-watch": "^0.6.1",
-    "tsify": "^0.2.0",
-    "browserify": "^4.2.0",
-    "grunt-browserify": "^2.1.3",
-    "grunt-exorcise": "^0.1.0",
-    "grunt-contrib-uglify": "^0.5.0"
-  },
-  "buildDir": "./build"
+    "name": "rc-sdk",
+    "paths": {
+        "build": "build",
+        "lib": "lib",
+        "libTSMask": "<%= pkg.paths.lib %>/**/*.ts",
+        "standalone": "<%= pkg.paths.build %>/standalone",
+        "standaloneFile": "<%= pkg.paths.build %>/standalone/<%= pkg.name %>",
+        "node": "<%= pkg.paths.build %>/node",
+        "amd": "<%= pkg.paths.build %>/amd"
+    },
+    "dependencies": {
+        "typescript": "*",
+        "tsify": "*",
+        "source-map-support": "*",
+        "time-grunt": "*",
+        "grunt": "*",
+        "grunt-contrib-clean": "*",
+        "grunt-contrib-copy": "*",
+        "grunt-contrib-requirejs": "*",
+        "grunt-contrib-watch": "*",
+        "grunt-contrib-uglify": "*",
+        "grunt-browserify": "*",
+        "grunt-exorcise": "*",
+        "grunt-text-replace": "*",
+        "grunt-typescript": "*",
+        "grunt-concurrent": "*",
+        "grunt-contrib-compress": "*"
+    }
 }
