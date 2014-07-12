@@ -10,9 +10,10 @@
 
         var path = require('path');
 
+        //TODO Wtf? Should be a better way to init...
         grunt.option.init({
-            testGrep: '',
-            testTimeout: 300
+            'test-grep': grunt.option('test-grep') || '',
+            'test-timeout': grunt.option('test-timeout') || 300
         });
 
         grunt.initConfig({
@@ -194,8 +195,8 @@
                         require: ['<%= pkg.paths.testFile %>'],
                         reporter: 'spec',
                         excludes: ['<%= pkg.paths.testMask %>'], // exclude test files from coverage
-                        timeout: grunt.option('testTimeout'),
-                        grep: grunt.option('testGrep')
+                        timeout: grunt.option('test-timeout'),
+                        grep: grunt.option('test-grep')
                     }
                 }
             },
@@ -205,8 +206,8 @@
                         filesRaw: '<%= pkg.paths.nodeTest %>/<%= pkg.paths.testMask %>',
                         require: ['<%= pkg.paths.testFile %>'],
                         reporter: 'spec',
-                        timeout: grunt.option('testTimeout'),
-                        grep: grunt.option('testGrep')
+                        timeout: grunt.option('test-timeout'),
+                        grep: grunt.option('test-grep')
                     }
                 }
             }
@@ -253,8 +254,8 @@
         grunt.registerTask('options', 'Get options', function() {
 
             grunt.log.writeln('Options');
-            grunt.log.writeln('--test-grep', grunt.option('testGrep'));
-            grunt.log.writeln('--test-timeout', grunt.option('testTimeout'));
+            grunt.log.writeln('--test-grep', grunt.option('test-grep'));
+            grunt.log.writeln('--test-timeout', grunt.option('test-timeout'));
 
         });
 
