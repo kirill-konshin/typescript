@@ -71,7 +71,7 @@
             },
             browserify: {
                 standalone: {
-                    src: ['<%= pkg.paths.lib %>/index.ts'],
+                    src: ['<%= pkg.paths.lib %>/standalone.ts'],
                     dest: '<%= pkg.paths.standaloneFile %>.js',
                     options: {
                         preBundleCB: function(bundle) {

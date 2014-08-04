@@ -4,6 +4,7 @@
         "build": "build",
         "lib": "lib",
         "test": "test",
+        "bower": "bower_components",
         "libTSMask": "<%= pkg.paths.lib %>/**/*.ts",
         "standalone": "<%= pkg.paths.build %>/standalone",
         "standaloneFile": "<%= pkg.paths.build %>/standalone/<%= pkg.name %>",
@@ -15,6 +16,8 @@
         "testMask": "**/*-spec.js"
     },
     "dependencies": {
+        "cryptojs": "*",
+        "pubnub": "*",
         "typescript": "*",
         "browserify": "*",
         "tsify": "*",

@@ -2,6 +2,8 @@
     "name": "tmp",
     "private": true,
     "dependencies": {
-        "requirejs": "*"
+        "requirejs": "*",
+        "cryptojslib": "*",
+        "pubnub": "*"
     }
 }

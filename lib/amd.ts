@@ -1,6 +1,6 @@
+export var Pubnub = window['PUBNUB'];
+export var CryptoJS = window['CryptoJS'];
 export import model = require('./core/model');
-
-export var modelInstance = new model.Model();
 
 /*
 (function (root, undefined?) {

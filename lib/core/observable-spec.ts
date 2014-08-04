@@ -1,6 +1,5 @@
 ///<reference path='../../definitions/test.d.ts' />
 
-declare var require;
 var expect: typeof chai.expect = require('chai').expect;
 import observable = require('./observable');
 
